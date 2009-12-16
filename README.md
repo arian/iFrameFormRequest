@@ -27,8 +27,8 @@ Or you can use it this way:
 			document.id('debug').set('html',response);
 		}
 	});
-	
-	
+
+
 	#HTML
 	<form action="upload.php" method="post" enctype="multipart/form-data">	
 		<input type="file" name="file" />	

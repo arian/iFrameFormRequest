@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>Mootools iFrameFormRequest</title>
+
+<link  href="style.css" rel="stylesheet" type="text/css" media="screen" />
+
+
+<script src="mootools-1.2.4-core.js" type="text/javascript"></script>
+<script src="../Source/iFrameFormRequest.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+window.addEvent('domready',function(){
+	
+	var iFrame = new iFrameFormRequest('testform',{
+		onRequest: function(){
+			document.id('debug').set('text','start');
+		},
+		onComplete: function(response){
+			document.id('debug').set('html',response);
+		}
+	});
+
+});
+
+</script>
+
+
+</head>
+<body>
+
+<h1>Mootools iFrameFormRequest</h1>
+
+
+<p>
+	This class gives you a method to upload files 'the ajax way'. Attach the iFrameFormMethod to any form tag and you can upload files
+</p>
+
+<h2>Demo</h2>
+
+	<form action="upload.php" method="post" enctype="multipart/form-data" id="testform">	
+		<input type="file" name="file" />	
+		<input type="submit" value="uploadAjax" />	
+	</form>
+	
+	<pre id="debug"></pre>
+
+
+</body>
+</html>

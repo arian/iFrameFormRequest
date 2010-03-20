@@ -28,22 +28,23 @@ var iFrameFormRequest = new Class({
 	
 	Implements: Options,
 	
-	options: {
+	options: { /*
 		onRequest: $empty,
 		onComplete: function(data){},
-		onFailure: $empty
+		onFailure: $empty */
 	},
 	
 	initialize: function(formElmt,options){
-		this.formElmt = formElmt;
 		this.setOptions(options);
 		this.frameId ='f' + Math.floor(Math.random() * 99999);
-		this.formElmt.set('target',this.frameId);
 		this.loading = false;
-		this.formElmt.addEvent('submit',function(){
-			this.loading = true;
-			this.options.onRequest();
-		}.bind(this));	
+
+		this.formElmt = document.id(formElmt)
+			.set('target',this.frameId)
+			.addEvent('submit',function(){
+				this.loading = true;
+				this.options.onRequest();
+			}.bind(this));	
 
 		this.iframe = new IFrame({
 			name: this.frameId,
@@ -69,7 +70,7 @@ var iFrameFormRequest = new Class({
 					}
 				}.pass(this)
 			}
-		}).inject($(document.body),'top');
+		}).inject($(document.body));
 	},
 
 	toElement: function(){

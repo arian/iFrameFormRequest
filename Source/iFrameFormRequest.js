@@ -29,46 +29,42 @@ var iFrameFormRequest = new Class({
 	Implements: [Options, Events],
 	
 	options: { /*
-		onRequest: $empty,
+		onRequest: function(){},
 		onComplete: function(data){},
-		onFailure: $empty */
+		onFailure: function(){} */
 	},
 	
 	initialize: function(formElmt, options){
 		this.setOptions(options);
-		this.frameId ='f' + Math.floor(Math.random() * 99999);
-		this.loading = false;
+		var frameId ='f' + Math.floor(Math.random() * 99999);
+		var loading = false;
 
-		this.formElmt = document.id(formElmt)
-			.set('target', this.frameId)
+		formElmt = document.id(formElmt)
+			.set('target', frameId)
 			.addEvent('submit', function(){
-				this.loading = true;
+				loading = true;
 				this.fireEvent('request');
 			}.bind(this));
 
 		this.iframe = new IFrame({
-			name: this.frameId,
+			name: frameId,
 			styles: {
-				display: 'none'		
+				display: 'none'
 			},
 			src: 'about:blank',
 			events: {
 				load: function(){
-					if (self.loading) {				
-						var doc = document.getElementById(self.frameId).contentWindow.document;
+					if (loading) {
+						var doc = document.getElementById(frameId).contentWindow.document;
 						if (doc) {
-							if (doc.location.href == 'about:blank') {
-								self.fireEvent('failure');
-							}
-							if ($type(self.options.onComplete) == 'function') {
-								self.fireEvent('complete', doc.body.innerHTML);
-							}
+							if (doc.location.href == 'about:blank') this.fireEvent('failure');
+							this.fireEvent('complete', doc.body.innerHTML);
 						} else {
-							self.fireEvent('failure');
+							this.fireEvent('failure');
 						}
-						self.loading = false;
+						loading = false;
 					}
-				}.pass(this)
+				}.bind(this)
 			}
 		}).inject(document.id(document.body));
 	},

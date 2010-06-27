@@ -59,7 +59,7 @@ var iFrameFormRequest = new Class({
 						var doc = document.getElementById(frameId).contentWindow.document;
 						if (doc) {
 							if (doc.location.href == 'about:blank') this.fireEvent('failure');
-							this.fireEvent('complete', doc.body.innerHTML);
+							else this.fireEvent('complete', doc.body.innerHTML);
 						} else {
 							this.fireEvent('failure');
 						}
@@ -70,6 +70,10 @@ var iFrameFormRequest = new Class({
 		}).inject(document.id(document.body));
 		
 		this.attach();
+	},
+	
+	send: function(){
+		this.form.submit();
 	},
 	
 	attach: function(){
@@ -92,8 +96,8 @@ var iFrameFormRequest = new Class({
 	
 });
 
-Element.implement('iFrameFormRequest',function(options){
-	this.store('iFrameFormRequest',new iFrameFormRequest(this,options));
+Element.implement('iFrameFormRequest', function(options){
+	this.store('iFrameFormRequest', new iFrameFormRequest(this,options));
 	return this;
 });
 

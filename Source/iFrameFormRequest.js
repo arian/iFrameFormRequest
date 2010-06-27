@@ -31,20 +31,21 @@ var iFrameFormRequest = new Class({
 	options: { /*
 		onRequest: function(){},
 		onComplete: function(data){},
-		onFailure: function(){} */
+		onFailure: function(){}, */
+		eventName: 'submit'
 	},
 	
-	initialize: function(formElmt, options){
+	initialize: function(form, options){
 		this.setOptions(options);
-		var frameId ='f' + Math.floor(Math.random() * 99999);
+		var frameId = this.frameId ='f' + Math.floor(Math.random() * 99999);
 		var loading = false;
 
-		formElmt = document.id(formElmt)
-			.set('target', frameId)
-			.addEvent('submit', function(){
-				loading = true;
-				this.fireEvent('request');
-			}.bind(this));
+		this.form = document.id(form);
+		
+		this.formEvent = function(){
+			loading = true;
+			this.fireEvent('request');
+		}.bind(this);
 
 		this.iframe = new IFrame({
 			name: frameId,
@@ -67,6 +68,22 @@ var iFrameFormRequest = new Class({
 				}.bind(this)
 			}
 		}).inject(document.id(document.body));
+		
+		this.attach();
+	},
+	
+	attach: function(){
+		this.form
+			.store('iFrameFormRequest:formTarget', this.form.get('target'))
+			.set('target', this.frameId)
+			.addEvent(this.options.eventName, this.formEvent);
+	},
+	
+	detach: function(){
+		this.form
+			.store('iFrameFormRequest:formTarget', this.form.get('target'))
+			.set('target', this.form.retrieve('iFrameFormRequest:formTarget'))
+			.removeEvent(this.options.eventName, this.formEvent);
 	},
 
 	toElement: function(){

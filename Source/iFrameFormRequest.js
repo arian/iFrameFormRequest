@@ -37,7 +37,7 @@ var iFrameFormRequest = new Class({
 	
 	initialize: function(form, options){
 		this.setOptions(options);
-		var frameId = this.frameId ='f' + Math.floor(Math.random() * 99999);
+		var frameId = this.frameId = 'f' + Math.floor(Math.random() * 99999);
 		var loading = false;
 
 		this.form = document.id(form);
@@ -56,7 +56,7 @@ var iFrameFormRequest = new Class({
 			events: {
 				load: function(){
 					if (loading) {
-						var doc = document.getElementById(frameId).contentWindow.document;
+						var doc = this.iframe.contentWindow.document;
 						if (doc) {
 							if (doc.location.href == 'about:blank') this.fireEvent('failure');
 							else this.fireEvent('complete', doc.body.innerHTML);

@@ -7,7 +7,6 @@ license: MIT-style
 authors:
 - Arian Stolwijk
 
-requires:
 requires: 
   core/1.2.4: 
   - Class.Extras
@@ -25,23 +24,23 @@ provides: [Element.iFrameFormRequest, iFrameFormRequest]
  */
 
 var iFrameFormRequest = new Class({
-	
+
 	Implements: [Options, Events],
-	
+
 	options: { /*
 		onRequest: function(){},
 		onComplete: function(data){},
 		onFailure: function(){}, */
 		eventName: 'submit'
 	},
-	
+
 	initialize: function(form, options){
 		this.setOptions(options);
 		var frameId = this.frameId = 'f' + Math.floor(Math.random() * 99999);
 		var loading = false;
 
 		this.form = document.id(form);
-		
+
 		this.formEvent = function(){
 			loading = true;
 			this.fireEvent('request');
@@ -68,21 +67,21 @@ var iFrameFormRequest = new Class({
 				}.bind(this)
 			}
 		}).inject(document.id(document.body));
-		
+
 		this.attach();
 	},
-	
+
 	send: function(){
 		this.form.submit();
 	},
-	
+
 	attach: function(){
 		this.form
 			.store('iFrameFormRequest:formTarget', this.form.get('target'))
 			.set('target', this.frameId)
 			.addEvent(this.options.eventName, this.formEvent);
 	},
-	
+
 	detach: function(){
 		this.form
 			.store('iFrameFormRequest:formTarget', this.form.get('target'))
@@ -93,7 +92,7 @@ var iFrameFormRequest = new Class({
 	toElement: function(){
 		return this.iframe;
 	}
-	
+
 });
 
 Element.implement('iFrameFormRequest', function(options){

@@ -7,11 +7,7 @@ license: MIT-style
 authors:
 - Arian Stolwijk
 
-requires: 
-  core/1.2.4: 
-  - Class.Extras
-  - Element.Event
-  - Element.Style
+requires: [Class, Options, Events, Element, Element.Event, Element.Style]
 
 provides: [Element.iFrameFormRequest, iFrameFormRequest]
 
@@ -36,7 +32,7 @@ var iFrameFormRequest = new Class({
 
 	initialize: function(form, options){
 		this.setOptions(options);
-		var frameId = this.frameId = 'f' + Math.floor(Math.random() * 99999);
+		var frameId = this.frameId = String.uniqueID();
 		var loading = false;
 
 		this.form = document.id(form);
@@ -54,11 +50,10 @@ var iFrameFormRequest = new Class({
 			src: 'about:blank',
 			events: {
 				load: function(){
-					if (loading) {
+					if (loading){
 						var doc = this.iframe.contentWindow.document;
-						if (doc) {
-							if (doc.location.href == 'about:blank') this.fireEvent('failure');
-							else this.fireEvent('complete', doc.body.innerHTML);
+						if (doc && doc.location.href != 'about:blank'){
+							this.fireEvent('complete', doc.body.innerHTML);
 						} else {
 							this.fireEvent('failure');
 						}
@@ -66,7 +61,7 @@ var iFrameFormRequest = new Class({
 					}
 				}.bind(this)
 			}
-		}).inject(document.id(document.body));
+		}).inject(document.body);
 
 		this.attach();
 	},
@@ -76,15 +71,13 @@ var iFrameFormRequest = new Class({
 	},
 
 	attach: function(){
-		this.form
-			.store('iFrameFormRequest:formTarget', this.form.get('target'))
-			.set('target', this.frameId)
+		this.target = this.form.get('target');
+		this.form.set('target', this.frameId)
 			.addEvent(this.options.eventName, this.formEvent);
 	},
 
 	detach: function(){
-		this.form
-			.set('target', this.form.retrieve('iFrameFormRequest:formTarget'))
+		this.form.set('target', this.target)
 			.removeEvent(this.options.eventName, this.formEvent);
 	},
 
@@ -95,7 +88,6 @@ var iFrameFormRequest = new Class({
 });
 
 Element.implement('iFrameFormRequest', function(options){
-	this.store('iFrameFormRequest', new iFrameFormRequest(this,options));
+	this.store('iFrameFormRequest', new iFrameFormRequest(this, options));
 	return this;
 });
-

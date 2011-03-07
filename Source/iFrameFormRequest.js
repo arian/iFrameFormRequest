@@ -84,7 +84,6 @@ var iFrameFormRequest = new Class({
 
 	detach: function(){
 		this.form
-			.store('iFrameFormRequest:formTarget', this.form.get('target'))
 			.set('target', this.form.retrieve('iFrameFormRequest:formTarget'))
 			.removeEvent(this.options.eventName, this.formEvent);
 	},

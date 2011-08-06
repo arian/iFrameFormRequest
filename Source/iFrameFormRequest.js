@@ -66,7 +66,7 @@ var iFrameFormRequest = new Class({
 		this.attach();
 	},
 
-	complete: function (response){
+	complete: function(response){
 		this.fireEvent('complete', response);
 	},
 

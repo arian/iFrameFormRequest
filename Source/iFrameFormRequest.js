@@ -72,7 +72,7 @@ var iFrameFormRequest = new Class({
 
 	send: function(){
 		this.form.submit();
-		if (this.options.eventName == 'submit') this.formEvent();
+		this.formEvent();
 	},
 
 	attach: function(){

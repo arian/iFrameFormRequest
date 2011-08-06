@@ -53,7 +53,7 @@ var iFrameFormRequest = new Class({
 					if (loading){
 						var doc = this.iframe.contentWindow.document;
 						if (doc && doc.location.href != 'about:blank'){
-							this.fireEvent('complete', doc.body.innerHTML);
+							this.complete(doc.body.innerHTML);
 						} else {
 							this.fireEvent('failure');
 						}
@@ -64,6 +64,10 @@ var iFrameFormRequest = new Class({
 		}).inject(document.body);
 
 		this.attach();
+	},
+
+	complete: function (response){
+		this.fireEvent('complete', response);
 	},
 
 	send: function(){

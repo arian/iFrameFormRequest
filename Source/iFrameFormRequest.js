@@ -7,7 +7,7 @@ license: MIT-style
 authors:
 - Arian Stolwijk
 
-requires: [Class, Options, Events, Element, Element.Event, Element.Style]
+requires: [Core/Class.Extras, Core/Element, Core/Element.Event, Core/Element.Style]
 
 provides: [Element.iFrameFormRequest, iFrameFormRequest]
 
